@@ -11,8 +11,29 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="dashboard">
-        <h1 class="dashboard-title">Smart Energy Monitoring Dashboard</h1>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-bolt"></i>
+            <span>Smart Grid</span>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Houses Overview</span>
+                </li>
+                <li class="nav-item" data-page="total-power">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Total Power Calculation</span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <!-- Dashboard Page -->
+        <div class="page-content dashboard-page active">
+            <h1 class="dashboard-title">Smart Energy Monitoring Dashboard</h1>
         
         <div class="houses-grid">
             <!-- House 1 -->
@@ -289,6 +310,92 @@
                 <div class="graph-container">
                     <canvas class="energy-graph"></canvas>
                 </div>
+            </div>
+
+            <!-- House 10 -->
+            <div class="house-card">
+                <div class="house-header">
+                    <i class="fas fa-home"></i>
+                    <div class="house-title">
+                        <h2>HOUSE 10</h2>
+                        <p>(Thompson)</p>
+                    </div>
+                </div>
+                
+                <div class="energy-info">
+                    <div class="energy-generation">
+                        <div class="solar">
+                            <i class="fas fa-sun"></i>
+                            <span>Energy Generation</span>
+                            <p>Today: 4.8 Mwh</p>
+                        </div>
+                        <div class="hydro">
+                            <i class="fas fa-tint"></i>
+                            <span>storm</span>
+                            <p>Today: 45.2 kWh</p>
+                            <span class="status ok">OK</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="battery-section">
+                    <div class="battery-gauge">
+                        <i class="fas fa-battery-three-quarters"></i>
+                        <div class="gauge" data-percentage="75">
+                            <span class="percentage">75%</span>
+                        </div>
+                        <p>Battery Percentage</p>
+                        <p>8 hrs 30 min</p>
+                        <p class="charging">N/A (charging)</p>
+                    </div>
+                    <div class="fault-detection">
+                        <div class="fault-item">
+                            <span class="status-dot green"></span>
+                            <span>Fault Detection</span>
+                        </div>
+                        <div class="fault-item">
+                            <span class="status-dot red"></span>
+                            <span>Low Power Warning</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="graph-container">
+                    <canvas class="energy-graph"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+
+        <!-- Total Power Calculation Page -->
+        <div class="page-content total-power-page">
+            <h1 class="dashboard-title">Total Power Calculation</h1>
+            <div class="total-power-stats">
+                <div class="stat-card">
+                    <h3>Total Solar Generation</h3>
+                    <div class="stat-value" id="total-solar">0 MWh</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Hydro Generation</h3>
+                    <div class="stat-value" id="total-hydro">0 kWh</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Average Battery Level</h3>
+                    <div class="stat-value" id="avg-battery">0%</div>
+                </div>
+            </div>
+            <div class="timeline-graph-container">
+                <h2>Power Generation Timeline</h2>
+                <div class="timeline-controls">
+                    <select id="timeRange">
+                        <option value="24h">Last 24 Hours</option>
+                        <option value="7d">Last 7 Days</option>
+                        <option value="30d">Last 30 Days</option>
+                    </select>
+                </div>
+                <canvas id="timelineGraph"></canvas>
             </div>
         </div>
     </div>
