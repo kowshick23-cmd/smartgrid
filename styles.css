@@ -9,26 +9,90 @@ html {
     font-size: 16px;
 }
 
+:root {
+    --primary-bg: #0a1929;
+    --secondary-bg: #132f4c;
+    --accent-color: #64b5f6;
+    --text-primary: #ffffff;
+    --text-secondary: #b0bec5;
+    --success-color: #4caf50;
+    --warning-color: #ff9800;
+    --error-color: #f44336;
+    --transition-speed: 0.3s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
 body {
-    background-color: #0a1929;
-    color: white;
+    background-color: var(--primary-bg);
+    color: var(--text-primary);
     min-height: 100vh;
     display: flex;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* Sidebar Styles */
 .sidebar {
     width: 250px;
-    background-color: #132f4c;
+    background-color: var(--secondary-bg);
     height: 100vh;
     position: fixed;
     left: 0;
     top: 0;
     padding: 20px 0;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    transition: transform var(--transition-speed) ease-in-out;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+}
+
+.sidebar-toggle {
+    display: none;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1001;
+    background: var(--accent-color);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    color: var(--text-primary);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    .sidebar-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }
 
 .sidebar-header {
@@ -106,6 +170,63 @@ body {
     gap: clamp(15px, 2vw, 30px);
     padding: clamp(10px, 2vw, 20px);
     width: 100%;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.house-card {
+    background-color: var(--secondary-bg);
+    border-radius: 15px;
+    padding: clamp(15px, 3vw, 25px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all var(--transition-speed) ease;
+    position: relative;
+    overflow: hidden;
+    animation: cardAppear 0.5s ease-out backwards;
+}
+
+.house-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.house-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), var(--success-color));
+    transform: scaleX(0);
+    transition: transform var(--transition-speed) ease;
+}
+
+.house-card:hover::before {
+    transform: scaleX(1);
 }
 
 .house-card {
@@ -147,15 +268,53 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.house-header i {
-    font-size: clamp(20px, 3vw, 28px);
+.house-icon {
     margin-right: 15px;
-    color: #64b5f6;
     transition: transform 0.3s ease;
 }
 
-.house-header:hover i {
+.house-header:hover .house-icon {
     transform: scale(1.1);
+}
+
+.house-icon .house-body {
+    fill: #64b5f6;
+}
+
+.house-icon .solar-panel {
+    fill: #2196f3;
+    stroke: #1565c0;
+    stroke-width: 0.5;
+}
+
+.house-icon .panel-lines {
+    fill: none;
+    stroke: #1565c0;
+    stroke-width: 0.5;
+}
+
+.house-icon .door {
+    fill: #1565c0;
+}
+
+.house-icon .window {
+    fill: #90caf9;
+}
+
+@keyframes solarGlow {
+    0% {
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(1.3);
+    }
+    100% {
+        filter: brightness(1);
+    }
+}
+
+.house-icon .solar-panel {
+    animation: solarGlow 2s infinite;
 }
 
 .house-title h2 {
@@ -206,9 +365,53 @@ body {
     margin-top: 5px;
 }
 
-.status.ok {
-    background-color: #4caf50;
+.status {
+    background-color: var(--success-color);
     color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all var(--transition-speed) ease;
+}
+
+.status::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: currentColor;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    }
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 6px rgba(255, 255, 255, 0);
+    }
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+}
+
+.status.ok {
+    background-color: var(--success-color);
+}
+
+.status.warning {
+    background-color: var(--warning-color);
+}
+
+.status.error {
+    background-color: var(--error-color);
 }
 
 .battery-section {
@@ -312,10 +515,59 @@ body {
 /* Total Power Page Styles */
 .page-content {
     display: none;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity var(--transition-speed) ease, transform var(--transition-speed) ease;
 }
 
 .page-content.active {
     display: block;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.page-transition .page-content {
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+/* Loading State Styles */
+.loading .houses-grid,
+.loading .total-power-stats {
+    animation: none;
+    opacity: 0;
+}
+
+.loading .gauge {
+    opacity: 0;
+    transform: scale(0.9);
+}
+
+/* Shimmer loading effect */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.loading .house-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
 }
 
 .total-power-stats {

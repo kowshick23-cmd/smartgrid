@@ -1,12 +1,25 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Add loading class to body
+    document.body.classList.add('loading');
+    
     // Initialize navigation
     initializeNavigation();
     
-    // Initialize all battery gauges
-    document.querySelectorAll('.gauge').forEach(gauge => {
-        const percentage = gauge.dataset.percentage;
-        updateGauge(gauge, percentage);
+    // Add mobile menu toggle
+    initializeMobileMenu();
+    
+    // Initialize all battery gauges with staggered animation
+    document.querySelectorAll('.gauge').forEach((gauge, index) => {
+        setTimeout(() => {
+            const percentage = gauge.dataset.percentage;
+            updateGauge(gauge, percentage);
+        }, index * 100);
     });
+    
+    // Remove loading class after initialization
+    setTimeout(() => {
+        document.body.classList.remove('loading');
+    }, 500);
 
     // Initialize all energy graphs
     document.querySelectorAll('.energy-graph').forEach((canvas, index) => {
@@ -124,17 +137,63 @@ function generateRandomData() {
 
 function initializeNavigation() {
     const navItems = document.querySelectorAll('.nav-item');
+    
     navItems.forEach(item => {
         item.addEventListener('click', () => {
+            // Add transition class to main content
+            document.querySelector('.main-content').classList.add('page-transition');
+            
             // Remove active class from all items and pages
             navItems.forEach(i => i.classList.remove('active'));
             document.querySelectorAll('.page-content').forEach(page => page.classList.remove('active'));
             
-            // Add active class to clicked item and corresponding page
+            // Add active class to clicked item
             item.classList.add('active');
+            
+            // Switch pages with transition
             const pageName = item.dataset.page;
-            document.querySelector(`.${pageName}-page`).classList.add('active');
+            setTimeout(() => {
+                document.querySelector(`.${pageName}-page`).classList.add('active');
+                document.querySelector('.main-content').classList.remove('page-transition');
+            }, 300);
+
+            // Close mobile menu if open
+            if (window.innerWidth <= 768) {
+                document.querySelector('.sidebar').classList.remove('active');
+            }
         });
+    });
+}
+
+function initializeMobileMenu() {
+    // Add menu toggle button to HTML if it doesn't exist
+    if (!document.querySelector('.sidebar-toggle')) {
+        const button = document.createElement('button');
+        button.className = 'sidebar-toggle';
+        button.innerHTML = '<i class="fas fa-bars"></i>';
+        document.body.appendChild(button);
+    }
+
+    // Toggle sidebar on button click
+    document.querySelector('.sidebar-toggle').addEventListener('click', () => {
+        const sidebar = document.querySelector('.sidebar');
+        sidebar.classList.toggle('active');
+    });
+
+    // Close sidebar when clicking outside
+    document.addEventListener('click', (e) => {
+        const sidebar = document.querySelector('.sidebar');
+        const toggle = document.querySelector('.sidebar-toggle');
+        if (!sidebar.contains(e.target) && !toggle.contains(e.target) && sidebar.classList.contains('active')) {
+            sidebar.classList.remove('active');
+        }
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+            document.querySelector('.sidebar').classList.remove('active');
+        }
     });
 }
 
