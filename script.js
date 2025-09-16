@@ -153,17 +153,228 @@ function initializeTimelineGraph() {
                 borderColor: '#64b5f6',
                 backgroundColor: 'rgba(100, 181, 246, 0.1)',
                 fill: true,
-                tension: 0.4
+                tension: 0.4,
+                borderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                pointBackgroundColor: '#ffffff',
+                pointBorderColor: '#64b5f6'
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    top: 10,
+                    right: 20,
+                    bottom: 10,
+                    left: 20
+                }
+            },
             plugins: {
                 legend: {
                     display: true,
+                    position: 'top',
+                    align: 'end',
                     labels: {
-                        color: 'white'
+                        color: 'white',
+                        font: {
+                            size: 12
+                        },
+                        boxWidth: 15,
+                        padding: 15
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(19, 47, 76, 0.9)',
+                    titleFont: {
+                        size: 14
+                    },
+                    bodyFont: {
+                        size: 13
+                    },
+                    padding: 12,
+                    borderColor: 'rgba(100, 181, 246, 0.3)',
+                    borderWidth: 1,
+                    displayColors: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)',
+                        drawBorder: false
+                    },
+                    ticks: {
+                        color: 'white',
+                        padding: 10,
+                        font: {
+                            size: 11
+                        },
+                        callback: function(value) {
+                            return value + ' kWh';
+                        }
+                    }
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)',
+                        drawBorder: false
+                    },
+                    ticks: {
+                        color: 'white',
+                        padding: 8,
+                        font: {
+                            size: 11
+                        },
+                        maxRotation: 0
+                    }
+                }
+            },
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            hover: {
+                mode: 'index',
+                intersect: false
+            }
+        }
+    });
+}
+
+function generateTimeLabels(timeRange) {
+    const labels = [];
+    const now = new Date();
+    
+    switch(timeRange) {
+        case '24h':
+            // Generate 24 hour labels
+            for (let i = 0; i < 24; i++) {
+                labels.push(`${i}:00`);
+            }
+            break;
+        
+        case '7d':
+            // Generate 7 day labels
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date(now);
+                date.setDate(date.getDate() - i);
+                labels.push(date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }));
+            }
+            break;
+        
+        case '30d':
+            // Generate 30 day labels
+            for (let i = 29; i >= 0; i--) {
+                const date = new Date(now);
+                date.setDate(date.getDate() - i);
+                labels.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+            }
+            break;
+    }
+    
+    return labels;
+}
+
+function generateTimelineData(timeRange) {
+    const dataPoints = {
+        '24h': 24,
+        '7d': 7,
+        '30d': 30
+    };
+
+    const maxValues = {
+        '24h': 500,
+        '7d': 3000,
+        '30d': 4000
+    };
+
+    const minValues = {
+        '24h': 200,
+        '7d': 1000,
+        '30d': 2000
+    };
+
+    return Array.from(
+        { length: dataPoints[timeRange] },
+        () => Math.floor(Math.random() * (maxValues[timeRange] - minValues[timeRange]) + minValues[timeRange])
+    );
+}
+
+let timelineChart = null;
+
+function initializeTimelineGraph(timeRange = '24h') {
+    const ctx = document.getElementById('timelineGraph').getContext('2d');
+    const timeLabels = generateTimeLabels(timeRange);
+    const powerData = generateTimelineData(timeRange);
+
+    // Destroy existing chart if it exists
+    if (timelineChart) {
+        timelineChart.destroy();
+    }
+
+    timelineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: timeLabels,
+            datasets: [{
+                label: 'Total Power Generation (kWh)',
+                data: powerData,
+                borderColor: '#64b5f6',
+                backgroundColor: 'rgba(100, 181, 246, 0.1)',
+                fill: true,
+                tension: 0.4,
+                borderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                pointBackgroundColor: '#ffffff',
+                pointBorderColor: '#64b5f6'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    top: 10,
+                    right: 20,
+                    bottom: 10,
+                    left: 20
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    align: 'center',
+                    labels: {
+                        color: 'white',
+                        font: {
+                            size: 12
+                        },
+                        boxWidth: 15,
+                        padding: 15
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(19, 47, 76, 0.9)',
+                    titleFont: {
+                        size: 14
+                    },
+                    bodyFont: {
+                        size: 13
+                    },
+                    padding: 12,
+                    borderColor: 'rgba(100, 181, 246, 0.3)',
+                    borderWidth: 1,
+                    displayColors: false,
+                    callbacks: {
+                        label: function(context) {
+                            return `Power Generation: ${context.parsed.y.toLocaleString()} kWh`;
+                        }
                     }
                 }
             },
@@ -171,35 +382,46 @@ function initializeTimelineGraph() {
                 y: {
                     beginAtZero: true,
                     grid: {
-                        color: 'rgba(255, 255, 255, 0.1)'
+                        color: 'rgba(255, 255, 255, 0.1)',
+                        drawBorder: false
                     },
                     ticks: {
-                        color: 'white'
+                        color: 'white',
+                        padding: 10,
+                        font: {
+                            size: 11
+                        },
+                        callback: function(value) {
+                            return value.toLocaleString() + ' kWh';
+                        }
                     }
                 },
                 x: {
                     grid: {
-                        color: 'rgba(255, 255, 255, 0.1)'
+                        color: 'rgba(255, 255, 255, 0.1)',
+                        drawBorder: false
                     },
                     ticks: {
-                        color: 'white'
+                        color: 'white',
+                        padding: 8,
+                        font: {
+                            size: 11
+                        },
+                        maxRotation: 45,
+                        minRotation: 45
                     }
                 }
+            },
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            hover: {
+                mode: 'index',
+                intersect: false
             }
         }
     });
-}
-
-function generateTimeLabels() {
-    const labels = [];
-    for (let i = 0; i < 24; i++) {
-        labels.push(`${i}:00`);
-    }
-    return labels;
-}
-
-function generateTimelineData() {
-    return Array.from({length: 24}, () => Math.floor(Math.random() * 500 + 200));
 }
 
 function updateTotalPowerStats() {
@@ -241,6 +463,5 @@ setInterval(() => {
 
 // Handle time range changes
 document.getElementById('timeRange').addEventListener('change', function(e) {
-    // In a real application, this would fetch new data based on the selected time range
-    initializeTimelineGraph();
+    initializeTimelineGraph(e.target.value);
 });
