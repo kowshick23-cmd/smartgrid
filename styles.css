@@ -1,0 +1,280 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    background-color: #0a1929;
+    color: white;
+    min-height: 100vh;
+    padding: clamp(10px, 2vw, 20px);
+    overflow-x: hidden;
+}
+
+.dashboard {
+    max-width: 1800px;
+    margin: 0 auto;
+    width: 100%;
+    padding: clamp(10px, 2vw, 30px);
+}
+
+.dashboard-title {
+    text-align: center;
+    margin: clamp(15px, 3vw, 40px) 0;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    color: white;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.houses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 450px), 1fr));
+    gap: clamp(15px, 2vw, 30px);
+    padding: clamp(10px, 2vw, 20px);
+    width: 100%;
+}
+
+.house-card {
+    background-color: #132f4c;
+    border-radius: 15px;
+    padding: clamp(15px, 3vw, 25px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.house-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
+}
+
+.house-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #64b5f6, #4caf50);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.house-card:hover::before {
+    opacity: 1;
+}
+
+.house-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: clamp(15px, 3vw, 25px);
+    padding-bottom: clamp(10px, 2vw, 15px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.house-header i {
+    font-size: clamp(20px, 3vw, 28px);
+    margin-right: 15px;
+    color: #64b5f6;
+    transition: transform 0.3s ease;
+}
+
+.house-header:hover i {
+    transform: scale(1.1);
+}
+
+.house-title h2 {
+    font-size: clamp(1.2em, 2.5vw, 1.5em);
+    margin-bottom: 5px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.house-title p {
+    color: #b0bec5;
+    font-size: clamp(0.8em, 1.5vw, 0.9em);
+    opacity: 0.8;
+}
+
+.energy-info {
+    margin-bottom: 20px;
+}
+
+.energy-generation {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.solar, .hydro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.solar i {
+    color: #ffd700;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.hydro i {
+    color: #64b5f6;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.status {
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+
+.status.ok {
+    background-color: #4caf50;
+    color: white;
+}
+
+.battery-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.battery-gauge {
+    text-align: center;
+    position: relative;
+    width: 120px;
+}
+
+.battery-gauge i {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #64b5f6;
+}
+
+.gauge {
+    width: clamp(100px, 15vw, 120px);
+    height: clamp(100px, 15vw, 120px);
+    border-radius: 50%;
+    border: 10px solid #1e4976;
+    position: relative;
+    margin: 10px auto;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center center;
+}
+
+.gauge:hover {
+    transform: scale(1.05);
+}
+
+.gauge::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 10px solid #4caf50;
+    clip: rect(0, 120px, 120px, 60px);
+    transform: rotate(var(--rotation));
+}
+
+.gauge .percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.battery-gauge p {
+    margin: 5px 0;
+    font-size: 0.9em;
+    color: #b0bec5;
+}
+
+.charging {
+    color: #64b5f6;
+    font-size: 0.8em;
+}
+
+.fault-detection {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.fault-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-dot.green {
+    background-color: #4caf50;
+}
+
+.status-dot.red {
+    background-color: #f44336;
+}
+
+.graph-container {
+    height: 150px;
+    margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+    .houses-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .houses-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .house-card {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .dashboard-title {
+        font-size: 1.8em;
+    }
+    
+    .house-card {
+        padding: 15px;
+    }
+    
+    .battery-section {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    
+    .fault-detection {
+        text-align: center;
+    }
+}

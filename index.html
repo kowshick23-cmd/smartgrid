@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Energy Monitoring Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Chart.js for graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard">
+        <h1 class="dashboard-title">Smart Energy Monitoring Dashboard</h1>
+        
+        <div class="houses-grid">
+            <!-- House 1 -->
+            <div class="house-card">
+                <div class="house-header">
+                    <i class="fas fa-home"></i>
+                    <div class="house-title">
+                        <h2>HOUSE 1</h2>
+                        <p>(Livingstone Residence)</p>
+                    </div>
+                </div>
+                
+                <div class="energy-info">
+                    <div class="energy-generation">
+                        <div class="solar">
+                            <i class="fas fa-sun"></i>
+                            <span>Energy Generation</span>
+                            <p>Today: 3.2 Mwh</p>
+                        </div>
+                        <div class="hydro">
+                            <i class="fas fa-tint"></i>
+                            <span>storm</span>
+                            <p>Today: 5.6 kWh</p>
+                            <span class="status ok">OK</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="battery-section">
+                    <div class="battery-gauge">
+                        <i class="fas fa-battery-full"></i>
+                        <div class="gauge" data-percentage="85">
+                            <span class="percentage">85%</span>
+                        </div>
+                        <p>Battery Percentage</p>
+                        <p>4 hrs 46 min</p>
+                    </div>
+                    <div class="fault-detection">
+                        <div class="fault-item">
+                            <span class="status-dot green"></span>
+                            <span>Fault Detection</span>
+                        </div>
+                        <div class="fault-item">
+                            <span class="status-dot red"></span>
+                            <span>Battery Immersion Fault</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="graph-container">
+                    <canvas class="energy-graph"></canvas>
+                </div>
+            </div>
+
+            <!-- House 2 -->
+            <div class="house-card">
+                <div class="house-header">
+                    <i class="fas fa-home"></i>
+                    <div class="house-title">
+                        <h2>HOUSE 2</h2>
+                        <p>(Jemison Family Home)</p>
+                    </div>
+                </div>
+                
+                <div class="energy-info">
+                    <div class="energy-generation">
+                        <div class="solar">
+                            <i class="fas fa-sun"></i>
+                            <span>Energy Generation</span>
+                            <p>Today: 5.2 kWh</p>
+                        </div>
+                        <div class="hydro">
+                            <i class="fas fa-tint"></i>
+                            <span>storm</span>
+                            <p>Today: 3.2 kWh</p>
+                            <span class="status ok">OK</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="battery-section">
+                    <div class="battery-gauge">
+                        <i class="fas fa-battery-three-quarters"></i>
+                        <div class="gauge" data-percentage="60">
+                            <span class="percentage">60%</span>
+                        </div>
+                        <p>Battery Percentage</p>
+                        <p>4 hrs 45 min</p>
+                    </div>
+                    <div class="fault-detection">
+                        <div class="fault-item">
+                            <span class="status-dot green"></span>
+                            <span>Fault Detection</span>
+                        </div>
+                        <div class="fault-item">
+                            <span class="status-dot red"></span>
+                            <span>Battery Connection Issue</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="graph-container">
+                    <canvas class="energy-graph"></canvas>
+                </div>
+            </div>
+
+            <!-- House 4 -->
+            <div class="house-card">
+                <div class="house-header">
+                    <i class="fas fa-home"></i>
+                    <div class="house-title">
+                        <h2>HOUSE 4</h2>
+                        <p>(Nakamura)</p>
+                    </div>
+                </div>
+                
+                <div class="energy-info">
+                    <div class="energy-generation">
+                        <div class="solar">
+                            <i class="fas fa-sun"></i>
+                            <span>Energy Generation</span>
+                            <p>Today: 5.2 kWh</p>
+                        </div>
+                        <div class="hydro">
+                            <i class="fas fa-tint"></i>
+                            <span>storm</span>
+                            <p>Today: 30.8 kWh</p>
+                            <span class="status ok">OK</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="battery-section">
+                    <div class="battery-gauge">
+                        <i class="fas fa-battery-full"></i>
+                        <div class="gauge" data-percentage="92">
+                            <span class="percentage">92%</span>
+                        </div>
+                        <p>Backup Time:</p>
+                        <p>Time to Change Again</p>
+                        <p class="charging">N/A (charging)</p>
+                    </div>
+                </div>
+
+                <div class="graph-container">
+                    <canvas class="energy-graph"></canvas>
+                </div>
+            </div>
+
+            <!-- House 3 -->
+            <div class="house-card">
+                <div class="house-header">
+                    <i class="fas fa-home"></i>
+                    <div class="house-title">
+                        <h2>HOUSE 3</h2>
+                        <p>(Patel)</p>
+                    </div>
+                </div>
+                
+                <div class="energy-info">
+                    <div class="energy-generation">
+                        <div class="solar">
+                            <i class="fas fa-sun"></i>
+                            <span>Energy Generation</span>
+                            <p>Today: 5.2 Mwh</p>
+                        </div>
+                        <div class="hydro">
+                            <i class="fas fa-tint"></i>
+                            <span>storm</span>
+                            <p>Today: 38.8 kWh</p>
+                            <span class="status ok">OK</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="battery-section">
+                    <div class="battery-gauge">
+                        <i class="fas fa-battery-three-quarters"></i>
+                        <div class="gauge" data-percentage="80">
+                            <span class="percentage">80%</span>
+                        </div>
+                        <p>Backup Time:</p>
+                        <p>12 hrs 43 min</p>
+                        <p class="charging">N/A (charging)</p>
+                    </div>
+                </div>
+
+                <div class="graph-container">
+                    <canvas class="energy-graph"></canvas>
+                </div>
+            </div>
+
+            <!-- House 6 -->
+            <div class="house-card">
+                <div class="house-header">
+                    <i class="fas fa-home"></i>
+                    <div class="house-title">
+                        <h2>HOUSE 6</h2>
+                        <p>(Silva)</p>
+                    </div>
+                </div>
+                
+                <div class="energy-info">
+                    <div class="energy-generation">
+                        <div class="solar">
+                            <i class="fas fa-sun"></i>
+                            <span>Energy Generation</span>
+                            <p>Today: 5.2 Mwh</p>
+                        </div>
+                        <div class="hydro">
+                            <i class="fas fa-tint"></i>
+                            <span>storm</span>
+                            <p>Today: 53.0 kWh</p>
+                            <span class="status ok">OK</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="battery-section">
+                    <div class="battery-gauge">
+                        <i class="fas fa-battery-quarter"></i>
+                        <div class="gauge" data-percentage="30">
+                            <span class="percentage">30%</span>
+                        </div>
+                        <p>Battery Percentage</p>
+                        <p>12 hrs 43 min</p>
+                        <p class="charging">N/A (charging)</p>
+                    </div>
+                </div>
+
+                <div class="graph-container">
+                    <canvas class="energy-graph"></canvas>
+                </div>
+            </div>
+
+            <!-- House 9 -->
+            <div class="house-card">
+                <div class="house-header">
+                    <i class="fas fa-home"></i>
+                    <div class="house-title">
+                        <h2>HOUSE 9</h2>
+                        <p>(Darcia)</p>
+                    </div>
+                </div>
+                
+                <div class="energy-info">
+                    <div class="energy-generation">
+                        <div class="solar">
+                            <i class="fas fa-sun"></i>
+                            <span>Energy Generation</span>
+                            <p>Today: 5.2 Mwh</p>
+                        </div>
+                        <div class="hydro">
+                            <i class="fas fa-tint"></i>
+                            <span>storm</span>
+                            <p>Today: 39.0 kWh</p>
+                            <span class="status ok">OK</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="battery-section">
+                    <div class="battery-gauge">
+                        <i class="fas fa-battery-quarter"></i>
+                        <div class="gauge" data-percentage="30">
+                            <span class="percentage">30%</span>
+                        </div>
+                        <p>Backup Time:</p>
+                        <p>Time to Charge Again</p>
+                        <p class="charging">N/A (charging)</p>
+                    </div>
+                </div>
+
+                <div class="graph-container">
+                    <canvas class="energy-graph"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
